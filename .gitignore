@@ -1,5 +1,0 @@
-node_modules
-.logs
-.volumes/**/*volume/
-test/ecosystem.config.js
-test/index.js
