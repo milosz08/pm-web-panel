@@ -23,4 +23,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: milosz08/pm-web-panel
           readme-filepath: ./docker/README.md
-          short-description: "Process manager interactive and real-time web panel."
+          short-description: "Process manager real-time and interactive web panel."
