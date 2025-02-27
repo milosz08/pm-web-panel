@@ -1,0 +1,10 @@
+spring:
+  autoconfigure:
+    exclude:
+      # exclude whitelabel error page (return only HTTP error codes)
+      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:sqlite:./pm-web-panel.db
+    driver-class-name: org.sqlite.JDBC

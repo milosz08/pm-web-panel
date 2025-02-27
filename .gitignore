@@ -1,0 +1,8 @@
+.idea/
+.bin/
+.log/
+target/
+out/
+node_modules/
+
+*.db
