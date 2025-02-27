@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: output-jar
-          path: ${{ env.SUBPROJECT_ROOT }}/.bin/pm-web-panel.jar
+          path: .bin/pm-web-panel.jar
           retention-days: 1
 
   docker:
