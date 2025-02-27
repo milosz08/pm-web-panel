@@ -23,7 +23,6 @@ docker run -d \
   -p 8080:8080 \
   -e PM_WEB_PANEL_XMS=1024m \
   -e PM_WEB_PANEL_XMX=1024m \
-  -e PM_WEB_PANEL_SERVER_PORT=<docker inner port, 8080> \
   milosz08/pm-web-panel
 ```
 
@@ -39,7 +38,6 @@ services:
     environment:
       PM_WEB_PANEL_XMS: 1024m
       PM_WEB_PANEL_XMX: 1024m
-      PM_WEB_PANEL_SERVER_PORT: <docker inner port, 8080>
     networks:
       - pm-web-panel-network
 

@@ -44,4 +44,5 @@ RUN chmod +x entrypoint
 
 LABEL maintainer="Miłosz Gilga <personal@miloszgilga.pl>"
 
+EXPOSE 8080
 ENTRYPOINT [ "./entrypoint" ]
