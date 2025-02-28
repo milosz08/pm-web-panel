@@ -65,14 +65,14 @@ $ yarn run dev
 
 ```bash
 $ ./mvnw clean install
-$ ./mvnw spring-boot:run
+$ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 or for Windows:
 
 ```bash
 .\mvnw.cmd clean install
-.\mvnw.cmd spring-boot:run
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 Check application state via endpoint: [/actuator/health](http://localhost:8690/actuator/health). If
