@@ -129,7 +129,7 @@ $ java \
 ## Author
 
 Created by Miłosz Gilga. If you have any questions about this application, send
-message: [personal@miloszgilga.pl](mailto:personal@miloszgilga.pl).
+message: [miloszgilga@gmail.com](mailto:miloszgilga@gmail.com).
 
 ## License
 
