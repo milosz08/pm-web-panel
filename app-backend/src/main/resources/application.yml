@@ -1,8 +1,6 @@
 spring:
-  autoconfigure:
-    exclude:
-      # exclude whitelabel error page (return only HTTP error codes)
-      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  mvc:
+    log-resolved-exception: false
   main:
     banner-mode: off
   datasource:
