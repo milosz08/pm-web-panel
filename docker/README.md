@@ -44,7 +44,7 @@ services:
   # other containers...
 
 networks:
-  jwizard-network:
+  pm-web-panel-network:
     driver: bridge
 ```
 
