@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class Main {
+class Main {
   private static final String SPA_CLASSPATH_PATH = "/static";
   private static final String CONFIG_FILE_LOCATION = "config.yml";
 

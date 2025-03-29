@@ -3,11 +3,11 @@ package pl.miloszgilga.pmwp;
 import lombok.Data;
 
 @Data
-public class AppConfig {
+class AppConfig {
   private Server server;
 
   @Data
-  public static class Server {
+  static class Server {
     private int port;
   }
 }
