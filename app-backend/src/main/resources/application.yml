@@ -1,8 +1,0 @@
-spring:
-  mvc:
-    log-resolved-exception: false
-  main:
-    banner-mode: off
-  datasource:
-    url: jdbc:sqlite:./pm-web-panel.db
-    driver-class-name: org.sqlite.JDBC

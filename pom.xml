@@ -17,13 +17,16 @@
 
   <properties>
     <!-- dependency versions -->
-    <spring-boot.version>3.4.3</spring-boot.version>
     <sqlite-jdbc.version>3.49.0.0</sqlite-jdbc.version>
     <lombok.version>1.18.34</lombok.version>
-    <java-annotations.version>26.0.2</java-annotations.version>
+    <javalin.version>6.5.0</javalin.version>
+    <jackson.version>2.17.2</jackson.version>
+    <logback.version>1.5.18</logback.version>
+    <snake-yaml.version>2.4</snake-yaml.version>
     <!-- configuration -->
     <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
     <maven-frontend-plugin.version>1.15.1</maven-frontend-plugin.version>
+    <maven-assembly-plugin.version>2.2-beta-5</maven-assembly-plugin.version>
     <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
     <frontend-output-dir>target/dist</frontend-output-dir>
     <java.version>17</java.version>
@@ -36,11 +39,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
+        <groupId>io.javalin</groupId>
+        <artifactId>javalin</artifactId>
+        <version>${javalin.version}</version>
       </dependency>
       <dependency>
         <groupId>org.xerial</groupId>
@@ -53,9 +54,19 @@
         <version>${lombok.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.jetbrains</groupId>
-        <artifactId>annotations</artifactId>
-        <version>${java-annotations.version}</version>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <artifactId>jackson-dataformat-yaml</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
