@@ -1,0 +1,11 @@
+[versions]
+gradleNodeVersion = "7.1.0"
+logbackVersion = "1.5.18"
+shadowJarVersion = "8.1.1"
+
+[libraries]
+logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackVersion" }
+
+[plugins]
+gradleNode = { id = "com.github.node-gradle.node", version.ref = "gradleNodeVersion" }
+shadowJar = { id = "com.github.johnrengelman.shadow", version.ref = "shadowJarVersion" }

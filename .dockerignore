@@ -1,7 +1,7 @@
-app-backend/target/
-app-frontend/target/
-app-frontend/node_modules/
-app-frontend/dist/
+pwp-backend/target/
+pwp-frontend/target/
+pwp-frontend/node_modules/
+pwp-frontend/dist/
 
-app-frontend/.prettierrc.json
-app-frontend/.eslintrc.json
+pwp-frontend/.prettierrc.json
+pwp-frontend/.eslintrc.json

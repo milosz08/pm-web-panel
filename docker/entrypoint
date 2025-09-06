@@ -3,5 +3,4 @@
 java \
 	-Xms$PM_WEB_PANEL_XMS \
 	-Xmx$PM_WEB_PANEL_XMX \
-	-Dspring.profiles.active=prod \
 	-jar $JAR_NAME

@@ -45,7 +45,7 @@ This command should create 1 docker container:
 
 1. Setup client:
 
-* Go to client directory (`$ cd app-frontend`) and install all dependencies via:
+* Go to client directory (`$ cd pwp-frontend`) and install all dependencies via:
 
 ```bash
 $ yarn install --frozen-lockfile
@@ -61,18 +61,16 @@ $ yarn run dev
 
 2. Setup server:
 
-* Go to server directory (`$ cd app-backend`) and type (for UNIX):
+* Type (for UNIX):
 
 ```bash
-$ ./mvnw clean install
-$ ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+$ ./gradlew :pwp-backend:run
 ```
 
 or for Windows:
 
 ```bash
-.\mvnw.cmd clean install
-.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+.\gradlew.cmd :pwp-backend:run
 ```
 
 Check application state via endpoint: [/actuator/health](http://localhost:8690/actuator/health). If
@@ -98,13 +96,13 @@ application is running and waiting for http requests.
 To create executable JAR file (client + server), you must type (for UNIX):
 
 ```bash
-$ ./mvnw clean package
+$ ./gradlew shadowJar -PbuildFrontend --no-daemon
 ```
 
 or for Windows:
 
 ```bash
-.\mvnw.cmd clean package
+.\gradlew.cmd shadowJar -PbuildFrontend --no-daemon
 ```
 
 Output JAR file will be located inside `.bin` directory. With this file you can run app in
@@ -114,16 +112,13 @@ bare-metal environment without virtualization via:
 $ java \
   -Xms1024m \
   -Xmx1024m \
-  -Dspring.profiles.active=prod \
-  -Dserver.port=8080 \
   -jar pm-web-panel.jar
 ```
 
 ## Tech stack
 
 * React 19, Vite, Mui Components,
-* Java 17, Spring Boot 3,
-* Spring JDBC, SQLite,
+* Java 17,
 * Docker containers.
 
 ## Author

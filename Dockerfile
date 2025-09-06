@@ -1,4 +1,27 @@
-FROM eclipse-temurin:17-jdk-alpine AS build
+# build frontend separately
+FROM node:22-alpine AS frontend
+
+ENV BUILD_DIR=/build/pm-web-panel
+
+RUN mkdir -p $BUILD_DIR
+WORKDIR $BUILD_DIR/pwp-frontend
+
+COPY pwp-frontend/package.json $BUILD_DIR/package.json
+COPY pwp-frontend/yarn.lock $BUILD_DIR/yarn.lock
+
+RUN yarn install --frozen-lockfile
+
+COPY pwp-frontend $BUILD_DIR
+
+RUN yarn build
+
+FROM eclipse-temurin:17-jdk-alpine AS backend
+
+SHELL ["/bin/sh", "-c"]
+
+# install missing xargs library
+RUN apk update
+RUN apk add --no-cache findutils
 
 ENV BUILD_DIR=/build/pm-web-panel
 
@@ -6,24 +29,24 @@ RUN mkdir -p $BUILD_DIR
 WORKDIR $BUILD_DIR
 
 # copy only maven-based resources for optimized caching
-COPY .mvn $BUILD_DIR/.mvn
-COPY mvnw $BUILD_DIR/mvnw
-COPY pom.xml $BUILD_DIR/pom.xml
-COPY app-backend/pom.xml $BUILD_DIR/app-backend/pom.xml
-COPY app-frontend/pom.xml $BUILD_DIR/app-frontend/pom.xml
+COPY gradle $BUILD_DIR/gradle
+COPY gradlew $BUILD_DIR/gradlew
+COPY build.gradle.kts $BUILD_DIR/build.gradle.kts
+COPY settings.gradle.kts $BUILD_DIR/settings.gradle.kts
 
-RUN chmod +x $BUILD_DIR/mvnw
-RUN cd $BUILD_DIR
+COPY pwp-frontend/build.gradle.kts $BUILD_DIR/pwp-frontend/build.gradle.kts
+COPY pwp-backend/build.gradle.kts $BUILD_DIR/pwp-backend/build.gradle.kts
 
-RUN ./mvnw dependency:tree
+RUN chmod +x $BUILD_DIR/gradlew
+RUN ./gradlew dependencies --no-daemon
 
 # copy rest of resources
-COPY app-backend $BUILD_DIR/app-backend
-COPY app-frontend $BUILD_DIR/app-frontend
+COPY pwp-backend $BUILD_DIR/pwp-backend
+COPY --from=frontend $BUILD_DIR/target/dist $BUILD_DIR/pwp-backend/src/main/resources/static
 COPY docker $BUILD_DIR/docker
 
-RUN ./mvnw clean
-RUN ./mvnw package
+RUN ./gradlew clean --no-daemon
+RUN ./gradlew shadowJar --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine
 
@@ -33,8 +56,8 @@ ENV JAR_NAME=pm-web-panel.jar
 
 WORKDIR $ENTRY_DIR
 
-COPY --from=build $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
-COPY --from=build $BUILD_DIR/docker/entrypoint $ENTRY_DIR/entrypoint
+COPY --from=backend $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
+COPY --from=backend $BUILD_DIR/docker/entrypoint $ENTRY_DIR/entrypoint
 
 RUN sed -i \
   -e "s/\$JAR_NAME/$JAR_NAME/g" \
@@ -42,7 +65,7 @@ RUN sed -i \
 
 RUN chmod +x entrypoint
 
-LABEL maintainer="Miłosz Gilga <personal@miloszgilga.pl>"
+LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.com>"
 
 EXPOSE 8080
 ENTRYPOINT [ "./entrypoint" ]

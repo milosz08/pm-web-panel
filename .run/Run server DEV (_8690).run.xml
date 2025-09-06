@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run server DEV (:8690)" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="pl.miloszgilga.pmwp.Main" />
-    <module name="app-backend" />
+    <module name="pm-web-panel.pwp-backend.main" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="pl.miloszgilga.pmwp.*" />
