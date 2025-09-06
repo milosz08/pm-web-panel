@@ -1,5 +1,10 @@
-node_modules
-.logs
-.volumes/**/*volume/
-test/ecosystem.config.js
-test/index.js
+.idea/
+.bin/
+.log/
+.gradle/
+build/
+target/
+out/
+node_modules/
+
+*.db

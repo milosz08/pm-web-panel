@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+  <property name="PATTERN"
+            value="%d{yyyy-MM-dd HH:mm:ss.SSS} > [%-5p] {%thread} \(%-35.35logger{39}\) : %m%n"/>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>

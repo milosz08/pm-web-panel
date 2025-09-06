@@ -1,17 +1,17 @@
 services:
-  pm2-web-ui-mongodb:
-    container_name: pm2-web-ui-mongodb
-    image: bitnami/mongodb:6.0.13
-    user: root
+  pm-web-panel:
+    container_name: pm-web-panel
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '${PM2_MONGODB_PORT}:27017'
-    volumes:
-      - './.volumes/db/mongo-volume:/bitnami/mongodb/data/db'
+      - ${PM_WEB_PANEL_SERVER_PORT}:8080
     environment:
-      - 'MONGODB_ROOT_PASSWORD=${PM2_MONGODB_PASSWORD}'
+      PM_WEB_PANEL_XMS: 1024m
+      PM_WEB_PANEL_XMX: 1024m
     networks:
-      - pm2-web-ui-network
+      - pm-web-panel-network
 
 networks:
-  pm2-web-ui-network:
+  pm-web-panel-network:
     driver: bridge

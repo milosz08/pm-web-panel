@@ -1,150 +1,131 @@
-# PM2 Real time Web UI
+# PM Web Panel
 
-An interactive and open-source management panel for PM2 instances updated in real time. It uses a node.js environment, server-side events and websocket (socket.io) protocol to send resources usage parameters and application logs in real time.
+An interactive and open-source management panel for PM2 instances updated in real time. It uses a
+Java process runner, Spring Boot (server) and React environment, server-side events and websocket
+protocol to send resources usage parameters and application logs in real time.
+
+[TODO] Presentation gif
 
 ## Table of content
-<!-- no toc -->
-- [Demo](#demo)
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Clone and install](#clone-and-install)
-- [hCaptcha challenge](#h-captcha-challenge)
-- [Disclaimer](#disclaimer)
-- [Tech stack](#tech-stack)
-- [Author](#author)
-- [License](#license)
 
-<a name="demo"></a>
-## Demo
-![](.github/pm2-web-ui.gif)
+* [Clone and install](#clone-and-install)
+* [Run with Docker (simplest, not for development)](#run-with-docker-simplest-not-for-development)
+* [Setup (for development)](#setup-for-development)
+* [Create executable JAR file (bare-metal)](#create-executable-jar-file-bare-metal)
+* [Tech stack](#tech-stack)
+* [Author](#author)
+* [License](#license)
 
-<a name="features"></a>
-## Features
-- [x] managing already mounted instances (start, restart, reload, stop and delete),
-- [x] updating PM2 process state and details in real time (processor and memory usage, uptime),
-- [x] updating PM2 process logs in UI in real time (split to `out` and `err`),
-- [x] possibility for viewing archived logs in small chunks,
-- [x] create additional user accounts with different permissions for running processes (view, start, restart etc.),
-- [x] automatic logs rotation in UI (keeping recent 1000 lines to prevent high memory usage),
-- [x] hCaptcha challenge in login form for prevent spam,
-- [x] simultaneous logout of the user after editing his account by the administrator,
-- [x] edit selected ecosystem config file via web interface,
-- [ ] handling multiple PM2 instances from different servers,
-- [ ] availability to start non-existing process.
-
-<a name="prerequisites"></a>
-## Prerequisites
-* Node v18 or higher with yarn,
-* MongoDB (used for storing additional application users),
-* Docker (if you want run MongoDB from `docker-compose.yml` file),
-* Modern browser which has support for SSE and Websocket protocol.
-
-<a name="clone-and-install"></a>
 ## Clone and install
 
-1. To install this software on your computer, use the command below:
+To install the program on your computer use the command (or use the built-in GIT system in your IDE
+environment):
+
 ```bash
-$ git clone https://github.com/milosz08/pm2-real-time-web-ui
+$ git clone https://github.com/milosz08/pm-web-panel
 ```
 
-2. Go to project directory and install packages:
+## Run with Docker (simplest, not for development)
+
+1. Go to root directory (where file `docker-compose.yml` is located) and type:
+
 ```bash
-$ cd pm2-real-time-web-ui
+$ docker compose up -d
+```
+
+This command should create 1 docker container:
+
+| Container name | Port(s) | Description                   |
+|----------------|---------|-------------------------------|
+| pm-web-panel   | 8080    | Application (client + server) |
+
+> NOTE: Application outgoing port can be changed inside `.env` file.
+
+## Setup (for development)
+
+1. Setup client:
+
+* Go to client directory (`$ cd pwp-frontend`) and install all dependencies via:
+
+```bash
 $ yarn install --frozen-lockfile
 ```
-> NOTE: If you don't have Yarn yet, install via: `$ npm i -g yarn`.
 
-3. Change environment variables in `.env` file or provide as exported variables:
-```properties
-# only for MongoDB docker container
-PM2_MONGODB_PORT=<MongoDB port>
-PM2_MONGODB_PASSWORD=<MongoDB default root password>
+> NOTE: If you do not have yarn, install via: `npm i -g yarn`
 
-PM2_ADMIN_LOGIN=<default admin account username>
-PM2_ADMIN_PASSWORD=<default admin account password>
-PM2_ADMIN_PASSWORD_HASHED=<true, if PM2_ADMIN_PASSWORD is hashed with BCrypt>
-PM2_DB_CONNECTION=mongodb://<username>:<password>@<host>:<port>/db?authSource=admin
-PM2_H_CAPTCHA_SITE_KEY=<hCaptcha site key, see hCaptcha challenge section>
-PM2_H_CAPTCHA_SECRET_KEY=<hCaptcha secret, see hCaptcha challenge section>
-PM2_COOKIE_SECRET=<cookies secret>
-PM2_CSRF_SECRET=<32 characters length secret>
-PM2_ECOSYSTEM_CONFIG_FILE_PATH=<path to ecosystem config file>
-```
+* Run client via:
 
-4. **(Only if you don't providing own MongoDB connection)** Create MongoDB instance via:
-```bash
-$ docker-compose up -d
-```
-This command should run MongoDB instance on port defined in `PM2_MONGODB_PORT` variable (by default is is `9191`).
-
-5. Run application:
-* **(Only for development purposes)** To run development server (with nodemon) type:
 ```bash
 $ yarn run dev
 ```
 
-* **(For production purposes)** To run server as PM2 process type:
+2. Setup server:
+
+* Type (for UNIX):
+
 ```bash
-$ cd pm2-real-time-web-ui
-$ pm2 start src/server.js --name Pm2RealTimeUi
-$ pm2 save
+$ ./gradlew :pwp-backend:run
 ```
 
-Optionally, you can pass additional parameters:
-* `--port` - application port, (by default 3000),
-* `--interval` - data refreshing interval (CPU and memory usage) in milliseconds (by default 1000),
-* `--sesTime` - session max time in seconds (by default 7200s -> 2h).
+or for Windows:
 
-Rest of application config you can find in `utils/config.js` file. The most significant fields, what you might be change is:
-
-```js
-logsBufferLinesCount: 100, // size of the buffer for reading consecutive log lines through the stream
-realTimeLogsBufferLinesCount: 1000, // max count of records in real-time console log dump
+```bash
+.\gradlew.cmd :pwp-backend:run
 ```
 
-<a name="h-captcha-challenge"></a>
-## hCaptcha challenge
-By default in development environment, hCaptcha is active but without any challenge. This is provided by the following keys:
-```properties
-PM2_H_CAPTCHA_SITE_KEY=20000000-ffff-ffff-ffff-000000000002
-PM2_H_CAPTCHA_SECRET_KEY=0x0000000000000000000000000000000000000000
-```
-for more information, see [this section](https://docs.hcaptcha.com/#test-key-set-publisher-or-pro-account).
+Check application state via endpoint: [/actuator/health](http://localhost:8690/actuator/health). If
+response show this:
 
-To configure hCaptcha for production environment, register new app in hCaptcha dashboard and get **site-key** with **secret-key** (more information about that process you will find [here](https://docs.hcaptcha.com)).
-
-After than, provide two environment variables:
-```properties
-PM2_H_CAPTCHA_SITE_KEY=<hCaptcha site key>
-PM2_H_CAPTCHA_SECRET_KEY=<hCaptcha secret>
+```json
+{
+  "status": "UP"
+}
 ```
 
-and make sure that `hCaptchaEnabled` variable is set to true (in `utils/config.js` file):
-```js
-...
-hCaptchaEnabled: true, // this must be true
-hCaptchaSiteKey: process.env.PM2_H_CAPTCHA_SITE_KEY,
-hCaptchaSecretKey: process.env.PM2_H_CAPTCHA_SECRET_KEY,
-...
+application is running and waiting for http requests.
+
+3. Applications (client and server) should be available at ports:
+
+| App name              | Port(s) |
+|-----------------------|---------|
+| pm-web-panel (server) | 8690    |
+| pm-web-panel (client) | 8691    |
+
+## Create executable JAR file (bare-metal)
+
+To create executable JAR file (client + server), you must type (for UNIX):
+
+```bash
+$ ./gradlew shadowJar -PbuildFrontend --no-daemon
 ```
 
-<a name="disclaimer"></a>
-## Disclaimer
-This application has most of the standard security features (only-http Cookies, CSRF tokens), but it is not advisable to use it in production environments with applications that have sensitive data. I am not responsible for any damage caused from using the application in a production environment.
+or for Windows:
 
-<a name="tech-stack"></a>
+```bash
+.\gradlew.cmd shadowJar -PbuildFrontend --no-daemon
+```
+
+Output JAR file will be located inside `.bin` directory. With this file you can run app in
+bare-metal environment without virtualization via:
+
+```bash
+$ java \
+  -Xms1024m \
+  -Xmx1024m \
+  -jar pm-web-panel.jar
+```
+
 ## Tech stack
-* Node.js v20,
-* Express and Handlebars (views),
-* Bootstrap and Chart.js (UI),
-* PM2 api,
-* Server side events,
-* Socket.io (websocket protocol).
 
-<a name="author"></a>
+* React 19, Vite, Mui Components,
+* Java 17,
+* Docker containers.
+
 ## Author
-Created by Miłosz Gilga. If you have any questions about this application, send message: [personal@miloszgilga.pl](mailto:personal@miloszgilga.pl).
 
-<a name="license"></a>
+Created by Miłosz Gilga. If you have any questions about this application, send
+message: [miloszgilga@gmail.com](mailto:miloszgilga@gmail.com).
+
 ## License
-This software is on Apache 2.0 License.
+
+This project is licensed under the AGPL-3.0 License - see the LICENSE file for details.

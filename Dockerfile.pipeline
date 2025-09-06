@@ -1,0 +1,22 @@
+FROM eclipse-temurin:17-jre-alpine
+
+ENV BUILD_DIR=/docker
+ENV ENTRY_DIR=/app/pm-web-panel
+ENV JAR_NAME=pm-web-panel.jar
+
+WORKDIR $ENTRY_DIR
+
+# copy pre-build jar file from CI/CD build task
+COPY $BUILD_DIR/$JAR_NAME $ENTRY_DIR/$JAR_NAME
+COPY $BUILD_DIR/entrypoint $ENTRY_DIR/entrypoint
+
+RUN sed -i \
+  -e "s/\$JAR_NAME/$JAR_NAME/g" \
+  entrypoint
+
+RUN chmod +x entrypoint
+
+LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.com>"
+
+EXPOSE 8080
+ENTRYPOINT [ "./entrypoint" ]

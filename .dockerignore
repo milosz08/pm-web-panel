@@ -1,0 +1,7 @@
+pwp-backend/target/
+pwp-frontend/target/
+pwp-frontend/node_modules/
+pwp-frontend/dist/
+
+pwp-frontend/.prettierrc.json
+pwp-frontend/.eslintrc.json
