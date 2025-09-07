@@ -37,7 +37,7 @@ This command should create 1 docker container:
 
 | Container name | Port(s) | Description                   |
 |----------------|---------|-------------------------------|
-| pm-web-panel   | 8080    | Application (client + server) |
+| pm-web-panel   | 8690    | Application (client + server) |
 
 > NOTE: Application outgoing port can be changed inside `.env` file.
 
