@@ -12,7 +12,7 @@
     "email": "personal@miloszgilga.pl",
     "url": "https://miloszgilga.pl"
   },
-  "license": "AGPL-3.0-only",
+  "license": "Apache-2.0",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
