@@ -1,9 +1,17 @@
 [versions]
 gradleNodeVersion = "7.1.0"
+jerseyVersion = "3.1.11"
+jettyVersion = "12.1.1"
 logbackVersion = "1.5.18"
 shadowJarVersion = "8.1.1"
 
 [libraries]
+jerseyContainerServlet = { module = "org.glassfish.jersey.containers:jersey-container-servlet", version.ref = "jerseyVersion" }
+jerseyHk2 = { module = "org.glassfish.jersey.inject:jersey-hk2", version.ref = "jerseyVersion" }
+jerseyMediaJson = { module = "org.glassfish.jersey.media:jersey-media-json-jackson", version.ref = "jerseyVersion" }
+jettyServer = { module = "org.eclipse.jetty:jetty-server", version.ref = "jettyVersion" }
+jettyServlet = { module = "org.eclipse.jetty.ee10:jetty-ee10-servlet", version.ref = "jettyVersion" }
+jettyRewrite = { module = "org.eclipse.jetty:jetty-rewrite", version.ref = "jettyVersion" }
 logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackVersion" }
 
 [plugins]

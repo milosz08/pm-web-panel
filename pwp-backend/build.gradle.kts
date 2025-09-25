@@ -17,11 +17,17 @@ repositories {
 }
 
 dependencies {
+  implementation(libs.jerseyContainerServlet)
+  implementation(libs.jerseyHk2)
+  implementation(libs.jerseyMediaJson)
+  implementation(libs.jettyServer)
+  implementation(libs.jettyServlet)
+  implementation(libs.jettyRewrite)
   implementation(libs.logbackClassic)
 }
 
 application {
-  mainClass.set("pl.miloszgilga.pmwp.Main")
+  mainClass.set("pl.miloszgilga.pwp.backend.PwpBackendEntrypoint")
 }
 
 tasks {
