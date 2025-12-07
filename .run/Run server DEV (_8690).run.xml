@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run server DEV (:8690)" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="pl.miloszgilga.pmwp.Main" />
+    <option name="MAIN_CLASS_NAME" value="pl.miloszgilga.pwp.backend.PwpBackendEntrypoint" />
     <module name="pm-web-panel.pwp-backend.main" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="pl.miloszgilga.pmwp.*" />
+        <option name="PATTERN" value="pl.miloszgilga.pmwp.server.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
