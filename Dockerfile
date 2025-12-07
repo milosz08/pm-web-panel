@@ -56,16 +56,23 @@ ENV JAR_NAME=pm-web-panel.jar
 
 WORKDIR $ENTRY_DIR
 
-COPY --from=backend $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
+RUN addgroup -S pmwpgroup && \
+    adduser -S pmwpuser -G pmwpgroup
+
+COPY --chown=pmwpuser:pmwpgroup --from=backend $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
 COPY --from=backend $BUILD_DIR/docker/entrypoint $ENTRY_DIR/entrypoint
 
 RUN sed -i \
   -e "s/\$JAR_NAME/$JAR_NAME/g" \
   entrypoint
 
-RUN chmod +x entrypoint
+RUN chmod +x entrypoint && \
+    chown pmwpuser:pmwpgroup entrypoint
 
 LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.com>"
 
 EXPOSE 8080
+
+USER pmwpuser
+
 ENTRYPOINT [ "./entrypoint" ]
