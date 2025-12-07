@@ -1,6 +1,6 @@
 #!/bin/sh
 
-java \
+exec java \
 	-Xms$PM_WEB_PANEL_XMS \
 	-Xmx$PM_WEB_PANEL_XMX \
 	-jar $JAR_NAME
