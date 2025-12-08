@@ -1,11 +1,13 @@
-name: Build and deploy
+name: Build, create image and deploy to DockerHub
 
 on:
   push:
     branches:
       - master
     paths:
-      - ".github/workflows/deploy.yml"
+      - ".github/workflows/docker-image.yml"
+      - "docker/**"
+      - "!docker/*.md"
       - "pwp-backend/**"
       - "pwp-frontend/**"
       - "Dockerfile.pipeline"
