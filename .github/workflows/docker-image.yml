@@ -79,6 +79,3 @@ jobs:
           file: ./Dockerfile.pipeline
           push: true
           tags: milosz08/pm-web-panel:latest
-
-      - name: Logout from Docker Hub
-        run: docker logout
